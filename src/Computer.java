@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 abstract public class Computer {
 
     protected String name;
@@ -59,4 +61,27 @@ abstract public class Computer {
 
     public abstract int volumeDown();
 
+    @Override
+    public String toString() {
+        return "Computer{" +
+                "name='" + name + '\'' +
+                ", hdd=" + hdd +
+                ", ram=" + ram +
+                ", state=" + state +
+                ", volumeLevel=" + volumeLevel +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Computer computer = (Computer) o;
+        return hdd == computer.hdd && ram == computer.ram && state == computer.state && volumeLevel == computer.volumeLevel && Objects.equals(name, computer.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, hdd, ram, state, volumeLevel);
+    }
 }

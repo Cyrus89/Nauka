@@ -1,23 +1,25 @@
 package Bug;
 
+import java.text.Collator;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Bug implements ConsoleNotification, Comparable<Bug> {
-    private String BugDescription;
-   // private String UserEmail;
+    private String bugDescription;
+    // private String UserEmail;
     private BugReporter bugReporter;
-    private int Priority;
-    private boolean Status = true;
+    private int priority;
+    private boolean status = true;
 
     public String getBugDescription() {
-        return this.BugDescription;
+        return this.bugDescription;
     }
 
     public void setBugDescription(String bugDescription) {
         if (bugDescription.length() < 10) {
             System.out.println("Opis zbyt mały");
         } else {
-            this.BugDescription = bugDescription;
+            this.bugDescription = bugDescription;
         }
 
     }
@@ -36,32 +38,33 @@ public class Bug implements ConsoleNotification, Comparable<Bug> {
 //    }
 
     public int getPriority() {
-        return this.Priority;
+        return this.priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(int priority) throws IllegalBugPriorityException {
         if (priority >= 1 && priority <= 5) {
-            this.Priority = priority;
+            this.priority = priority;
         } else {
-            System.out.println("Priorytet powinien być w przedziale 1 do 5");
+//            System.out.println("Priorytet powinien być w przedziale 1 do 5");
+            throw new IllegalBugPriorityException("Priorytet powinien być w przedziale 1 do 5");
         }
 
     }
 
     public boolean isStatus() {
-        return this.Status;
+        return this.status;
     }
 
     public void setStatus(boolean status) {
-        this.Status = status;
+        this.status = status;
         notifyStatusChange();
     }
 
-    public Bug(String BugDescription, BugReporter bugReporter, int Priority, boolean Status) {
-        this.BugDescription = BugDescription;
+    public Bug(String bugDescription, BugReporter bugReporter, int priority, boolean status) {
+        this.bugDescription = bugDescription;
         this.bugReporter = bugReporter;
-        this.Priority = Priority;
-        this.Status = Status;
+        this.priority = priority;
+        this.status = status;
     }
 
 //    public void getAllBugInfo() {
@@ -73,7 +76,7 @@ public class Bug implements ConsoleNotification, Comparable<Bug> {
 //    }
 
     public void getBugStatus() {
-        if (this.Status) {
+        if (this.status) {
             System.out.println("Status Buga: Otwarty");
         } else {
             System.out.println("Status Buga: Zamknięty");
@@ -82,7 +85,7 @@ public class Bug implements ConsoleNotification, Comparable<Bug> {
     }
 
     public void getBugPriority() {
-        System.out.println("Prio błędu to: " + this.Priority);
+        System.out.println("Prio błędu to: " + this.priority);
     }
 
     public BugReporter getBugReporter() {
@@ -94,7 +97,7 @@ public class Bug implements ConsoleNotification, Comparable<Bug> {
     }
 
     @Override
-    public void notifyStatusChange(){
+    public void notifyStatusChange() {
         System.out.println("Status się zmienił");
 
     }
@@ -102,10 +105,10 @@ public class Bug implements ConsoleNotification, Comparable<Bug> {
     @Override
     public String toString() {
         return "Bug{" +
-                "BugDescription='" + BugDescription + '\'' +
+                "BugDescription='" + bugDescription + '\'' +
                 ", bugReporter=" + bugReporter +
-                ", Priority=" + Priority +
-                ", Status=" + Status +
+                ", Priority=" + priority +
+                ", Status=" + status +
                 '}';
     }
 
@@ -114,19 +117,21 @@ public class Bug implements ConsoleNotification, Comparable<Bug> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bug bug = (Bug) o;
-        return Priority == bug.Priority && Status == bug.Status && Objects.equals(BugDescription, bug.BugDescription) && Objects.equals(bugReporter, bug.bugReporter);
+        return priority == bug.priority && status == bug.status && Objects.equals(bugDescription, bug.bugDescription) && Objects.equals(bugReporter, bug.bugReporter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(BugDescription, bugReporter, Priority, Status);
+        return Objects.hash(bugDescription, bugReporter, priority, status);
     }
-
-
 
 
     @Override
     public int compareTo(Bug b) {
-        return this.getBugDescription().compareTo(b.getBugDescription());
+        Collator collator = Collator.getInstance((new Locale("pl", "PL"))); //Your locale here
+        collator.setStrength(Collator.PRIMARY);
+        int i = collator.compare(getBugDescription(), b.getBugDescription());
+        return i;
+//        return this.getBugDescription().compareTo(b.getBugDescription());
     }
 }

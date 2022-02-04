@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class PC extends Computer {
 
 
@@ -5,7 +7,7 @@ public class PC extends Computer {
 
     public PC(String name, int hdd, int ram, boolean powerSupply) {
         super(name, hdd, ram);
-        powerSupply = false;
+//        powerSupply = false;
     }
 
 
@@ -51,5 +53,29 @@ public class PC extends Computer {
         powerSupply = newPowerSupply;
     }
 
+    @Override
+    public String toString() {
+        return "PC{" +
+                "name='" + name + '\'' +
+                ", hdd=" + hdd +
+                ", ram=" + ram +
+                ", state=" + state +
+                ", volumeLevel=" + volumeLevel +
+                ", powerSupply=" + powerSupply +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PC pc = (PC) o;
+        return powerSupply == pc.powerSupply;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), powerSupply);
+    }
 }

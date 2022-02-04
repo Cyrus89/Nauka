@@ -6,14 +6,16 @@ public class BugReporter {
 
     private String email;
     private String firstName;
+    private String lastName;
+    private Gender gender;
 
-    public BugReporter(String email, String firstName, String lastName) {
+    public BugReporter(String email, String firstName, String lastName, Gender gender) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
     }
 
-    private String lastName;
 
     public String getEmail() {
         return email;
@@ -49,6 +51,7 @@ public class BugReporter {
                 "email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
                 '}';
     }
 
@@ -57,11 +60,19 @@ public class BugReporter {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BugReporter that = (BugReporter) o;
-        return Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+        return Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && gender == that.gender;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, firstName, lastName);
+        return Objects.hash(email, firstName, lastName, gender);
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }
